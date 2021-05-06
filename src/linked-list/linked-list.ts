@@ -13,8 +13,16 @@ export class LinkedList {
     return this._size;
   }
 
-  public insert(node: LinkedListNode): LinkedList {
+  private incrementSize() {
     this._size++;
+  }
+
+  private decrementSize() {
+    this._size--;
+  }
+
+  public insert(node: LinkedListNode): LinkedList {
+    this.incrementSize();
 
     if (!this.head) {
       this.head = node;
@@ -33,7 +41,7 @@ export class LinkedList {
 
   public insertAt(position: number, node: LinkedListNode): LinkedList {
     if (position === 1) {
-      this._size++;
+      this.incrementSize();
       const oldHead = this.head;
       this.head = node;
       this.head.next = oldHead;
@@ -51,7 +59,7 @@ export class LinkedList {
       currentNode = currentNode.next;
     }
 
-    this._size++;
+    this.incrementSize();
     previousNode.next = node;
     node.next = currentNode;
 
@@ -90,7 +98,7 @@ export class LinkedList {
     }
 
     if (this.head.data === data) {
-      this._size--;
+      this.decrementSize();
       const data = this.head.data;
       this.head = this.head.next;
       return data;
@@ -101,7 +109,7 @@ export class LinkedList {
 
     while (node) {
       if (node.data === data) {
-        this._size--;
+        this.decrementSize();
         previousNode.next = node.next;
         return node.data;
       }
@@ -118,7 +126,7 @@ export class LinkedList {
       return null;
     }
 
-    this._size--;
+    this.decrementSize();
     const data = this.head.data;
     this.head = this.head.next;
     return data;
@@ -141,7 +149,7 @@ export class LinkedList {
       node = node.next;
     }
 
-    this._size--;
+    this.decrementSize();
     previousNode.next = null;
     return node.data;
   }
@@ -172,7 +180,7 @@ export class LinkedList {
       node = node.next;
     }
 
-    this._size--;
+    this.decrementSize();
     previousNode.next = node.next;
     return node.data;
   }

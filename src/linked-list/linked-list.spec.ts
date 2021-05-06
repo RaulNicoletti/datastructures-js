@@ -407,6 +407,15 @@ describe('LinkedList insertAt', () => {
 });
 
 describe('LinkedList reverse', () => {
+  it('should do nothing on an empty list', () => {
+    const linkedList = new LinkedList();
+
+    linkedList.reverse();
+
+    const arr = linkedList.toArray();
+    expect(arr).toStrictEqual([]);
+  });
+
   it('should revert a linked list - 1 element', () => {
     const linkedList = new LinkedList();
     const firstNode = new LinkedListNode(1);

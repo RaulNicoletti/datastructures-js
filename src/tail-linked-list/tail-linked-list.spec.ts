@@ -457,6 +457,22 @@ describe('tailLinkedList insertAt', () => {
     expect(arr).toStrictEqual([node.data]);
   });
 
+  it('should insert a node when the position is one and the size is one', () => {
+    const linkedList = new TailLinkedList();
+    const firstNode = new LinkedListNode(1);
+    const secondNode = new LinkedListNode(1);
+
+    expect(linkedList.size).toBe(0);
+
+    const element = linkedList.insertAt(1, firstNode).insertAt(1, secondNode);
+    const arr = linkedList.toArray();
+
+    expect(linkedList.size).toBe(2);
+    expect(element.head).toStrictEqual(secondNode);
+    expect(element.tail).toStrictEqual(firstNode);
+    expect(arr).toStrictEqual([secondNode.data, firstNode.data]);
+  });
+
   it('should insert a node at given position', () => {
     const linkedList = new TailLinkedList();
     const firstNode = new LinkedListNode(1);

@@ -1,7 +1,22 @@
 import { delay } from './utils';
-import { partialDeepEqual } from './partial-deep-equal';
+import { partialDeepEqual, isValidArgument } from './partial-deep-equal';
+import { InvalidArgumentException } from '../exceptions/invalid-argument.exception';
 
-describe('partialDeepEqual partialDeepEqual', () => {
+describe('isValidArgument', () => {
+  it('should return false if the argument is not valid', () => {
+    const res = isValidArgument(() => 1);
+
+    expect(res).toBe(false);
+  });
+
+  it('should return true if the argument is valid', () => {
+    const res = isValidArgument({});
+
+    expect(res).toBe(true);
+  });
+});
+
+describe('partialDeepEqual', () => {
   it('should return true if is string and equal', () => {
     const res = partialDeepEqual('str', 'str');
     expect(res).toBe(true);
@@ -246,8 +261,6 @@ describe('partialDeepEqual partialDeepEqual', () => {
     const fn = () => 1;
     const regex = new RegExp('');
 
-    expect(() => partialDeepEqual(fn, regex)).toThrow(
-      'Arguments types are unsupported.',
-    );
+    expect(() => partialDeepEqual(fn, regex)).toThrow(InvalidArgumentException);
   });
 });

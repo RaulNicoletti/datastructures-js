@@ -1,6 +1,15 @@
 import { isArray, isDate, isObject, isPrimitive, dateIsEqual } from './utils';
+import { InvalidArgumentException } from '../exceptions/invalid-argument.exception';
+
+export function isValidArgument(obj: any) {
+  return isArray(obj) || isDate(obj) || isObject(obj) || isPrimitive(obj);
+}
 
 export function partialDeepEqual(obj1: any, obj2: any): boolean {
+  if (!isValidArgument(obj1) || !isValidArgument(obj2)) {
+    throw new InvalidArgumentException();
+  }
+
   if (isPrimitive(obj1) && isPrimitive(obj2)) {
     return obj1 === obj2;
   }
@@ -53,6 +62,4 @@ export function partialDeepEqual(obj1: any, obj2: any): boolean {
 
     return true;
   }
-
-  throw new Error('Arguments types are unsupported.');
 }

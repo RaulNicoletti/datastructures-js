@@ -57,6 +57,13 @@ describe('partialDeepEqual partialDeepEqual', () => {
     expect(res).toBe(true);
   });
 
+  it('should return false if is Object and the first object are greater', () => {
+    const obj1 = { name: 'raul', age: 32 };
+    const obj2 = { name: 'raul' };
+    const res = partialDeepEqual(obj1, obj2);
+    expect(res).toBe(false);
+  });
+
   it('should return false if is Object and do not has the property', () => {
     const obj1 = { name: 'raul' };
     const obj2 = { age: 32 };
@@ -233,5 +240,14 @@ describe('partialDeepEqual partialDeepEqual', () => {
 
     const res = partialDeepEqual(arr1, arr2);
     expect(res).toBe(true);
+  });
+
+  it('should thrown an error if the argument type unsupported', () => {
+    const fn = () => 1;
+    const regex = new RegExp('');
+
+    expect(() => partialDeepEqual(fn, regex)).toThrow(
+      'Arguments types are unsupported.',
+    );
   });
 });

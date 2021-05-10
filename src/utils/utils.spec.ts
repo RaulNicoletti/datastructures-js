@@ -1,4 +1,4 @@
-import { isArray, isObject, isDate } from './utils';
+import { isArray, isObject, isDate, isPrimitive } from './utils';
 
 describe('utils isArray', () => {
   it('should return true if is Array', () => {
@@ -43,6 +43,22 @@ describe('utils isDate', () => {
   it('should return false if is not Object', () => {
     const date = 'date';
     const res = isDate(date);
+
+    expect(res).toBe(false);
+  });
+});
+
+describe('utils isPrimitive', () => {
+  it('should return true if a type is primitive', () => {
+    const str = 'str';
+    const res = isPrimitive(str);
+
+    expect(res).toBe(true);
+  });
+
+  it('should return false if a type is not primitive', () => {
+    const obj = {};
+    const res = isPrimitive(obj);
 
     expect(res).toBe(false);
   });

@@ -1,8 +1,8 @@
-import { isArray, isDate, isObject, dateIsEqual } from './utils';
+import { isArray, isDate, isObject, isPrimitive, dateIsEqual } from './utils';
 
 export function partialDeepEqual(obj1: any, obj2: any): boolean {
-  if (obj1 === obj2) {
-    return true;
+  if (isPrimitive(obj1) && isPrimitive(obj2)) {
+    return obj1 === obj2;
   }
 
   if (isDate(obj1) && isDate(obj2)) {
@@ -10,6 +10,10 @@ export function partialDeepEqual(obj1: any, obj2: any): boolean {
   }
 
   if (isObject(obj1) && isObject(obj2)) {
+    if (Object.keys(obj1).length > Object.keys(obj2).length) {
+      return false;
+    }
+
     const props = Object.keys(obj1);
 
     for (const prop of props) {
@@ -32,7 +36,7 @@ export function partialDeepEqual(obj1: any, obj2: any): boolean {
         if (!dateIsEqual(prop1, prop2)) {
           return false;
         }
-      } else if (prop1 !== prop2) {
+      } else if (isPrimitive(prop1) && isPrimitive(prop2) && prop1 !== prop2) {
         return false;
       }
     }
@@ -50,5 +54,5 @@ export function partialDeepEqual(obj1: any, obj2: any): boolean {
     return true;
   }
 
-  return false;
+  throw new Error('Arguments types are unsupported.');
 }

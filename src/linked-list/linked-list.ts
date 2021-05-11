@@ -79,7 +79,7 @@ export class LinkedList<T = any> {
     return arr;
   }
 
-  public find(data: T): T | null {
+  public find(data: Partial<T>): T | null {
     let node = this.head;
 
     while (node) {
@@ -93,7 +93,7 @@ export class LinkedList<T = any> {
     return null;
   }
 
-  public delete(data: T): T | null {
+  public delete(data: Partial<T>): T | null {
     if (!this.head) {
       return null;
     }

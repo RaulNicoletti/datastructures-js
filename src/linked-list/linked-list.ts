@@ -1,12 +1,13 @@
 import { LinkedListNode } from './linked-list-node';
+import { partialDeepEqual } from '../utils/partial-deep-equal';
 
-export class LinkedList {
-  public head: LinkedListNode | null;
+export class LinkedList<T = any> {
+  public head: LinkedListNode<T> | null;
   private _size: number;
 
-  constructor(node?: LinkedListNode) {
-    this.head = node || null;
-    this._size = node ? 1 : 0;
+  constructor() {
+    this.head = null;
+    this._size = 0;
   }
 
   public get size() {
@@ -21,7 +22,7 @@ export class LinkedList {
     this._size--;
   }
 
-  public insert(node: LinkedListNode): LinkedList {
+  public insert(node: LinkedListNode<T>): LinkedList<T> {
     this.incrementSize();
 
     if (!this.head) {
@@ -39,7 +40,7 @@ export class LinkedList {
     return this;
   }
 
-  public insertAt(position: number, node: LinkedListNode): LinkedList {
+  public insertAt(position: number, node: LinkedListNode<T>): LinkedList<T> {
     if (position === 1) {
       this.incrementSize();
       const oldHead = this.head;
@@ -66,8 +67,8 @@ export class LinkedList {
     return this;
   }
 
-  public toArray(): any[] {
-    const arr = [];
+  public toArray(): T[] {
+    const arr = new Array<T>();
 
     let node = this.head;
     while (node) {
@@ -78,12 +79,12 @@ export class LinkedList {
     return arr;
   }
 
-  public search(data: any): LinkedListNode | null {
+  public find(data: T): T | null {
     let node = this.head;
 
     while (node) {
-      if (node.data === data) {
-        return node;
+      if (partialDeepEqual(data, node.data)) {
+        return node.data;
       }
 
       node = node.next;
@@ -92,23 +93,20 @@ export class LinkedList {
     return null;
   }
 
-  public delete(data: any): any | null {
-    if (this.size === 0) {
+  public delete(data: T): T | null {
+    if (!this.head) {
       return null;
     }
 
-    if (this.head.data === data) {
-      this.decrementSize();
-      const data = this.head.data;
-      this.head = this.head.next;
-      return data;
+    if (partialDeepEqual(data, this.head.data)) {
+      return this.deleteHead();
     }
 
     let node = this.head;
     let previousNode = null;
 
     while (node) {
-      if (node.data === data) {
+      if (partialDeepEqual(data, node.data)) {
         this.decrementSize();
         previousNode.next = node.next;
         return node.data;
@@ -121,7 +119,7 @@ export class LinkedList {
     return null;
   }
 
-  public deleteHead(): any | null {
+  public deleteHead(): T | null {
     if (!this.head) {
       return null;
     }
@@ -132,14 +130,13 @@ export class LinkedList {
     return data;
   }
 
-  public deleteTail(): any | null {
+  public deleteTail(): T | null {
     if (!this.head) {
       return null;
     }
 
     if (this.size === 1) {
-      const data = this.deleteHead();
-      return data;
+      return this.deleteHead();
     }
 
     let node = this.head;
@@ -154,19 +151,17 @@ export class LinkedList {
     return node.data;
   }
 
-  public deleteAt(position: number): any | null {
-    if (this.size === 0) {
+  public deleteAt(position: number): T | null {
+    if (!this.head) {
       return null;
     }
 
     if (position === 1) {
-      const data = this.deleteHead();
-      return data;
+      return this.deleteHead();
     }
 
     if (position === this.size) {
-      const data = this.deleteTail();
-      return data;
+      return this.deleteTail();
     }
 
     if (position > this.size) {

@@ -2,16 +2,20 @@ import { LinkedListNode } from './linked-list-node';
 import { partialDeepEqual } from '../utils/partial-deep-equal';
 
 export class LinkedList<T = any> {
-  public head: LinkedListNode<T> | null;
+  private _head: LinkedListNode<T> | null;
   private _size: number;
 
   constructor() {
-    this.head = null;
+    this._head = null;
     this._size = 0;
   }
 
   public get size() {
     return this._size;
+  }
+
+  public get head() {
+    return this._head;
   }
 
   private incrementSize() {
@@ -22,15 +26,16 @@ export class LinkedList<T = any> {
     this._size--;
   }
 
-  public insert(node: LinkedListNode<T>): LinkedList<T> {
+  public insert(data: T): LinkedList<T> {
+    const node = new LinkedListNode<T>(data);
     this.incrementSize();
 
-    if (!this.head) {
-      this.head = node;
+    if (!this._head) {
+      this._head = node;
       return this;
     }
 
-    let root = this.head;
+    let root = this._head;
     while (root.next) {
       root = root.next;
     }
@@ -40,12 +45,13 @@ export class LinkedList<T = any> {
     return this;
   }
 
-  public insertAt(position: number, node: LinkedListNode<T>): LinkedList<T> {
+  public insertAt(position: number, data: T): LinkedList<T> {
+    const node = new LinkedListNode<T>(data);
     if (position === 1) {
       this.incrementSize();
-      const oldHead = this.head;
-      this.head = node;
-      this.head.next = oldHead;
+      const oldHead = this._head;
+      this._head = node;
+      this._head.next = oldHead;
       return this;
     }
 
@@ -53,7 +59,7 @@ export class LinkedList<T = any> {
       return this;
     }
 
-    let currentNode = this.head;
+    let currentNode = this._head;
     let previousNode = currentNode;
     for (let i = 1; i < position; i++) {
       previousNode = currentNode;
@@ -70,7 +76,7 @@ export class LinkedList<T = any> {
   public toArray(): T[] {
     const arr = new Array<T>();
 
-    let node = this.head;
+    let node = this._head;
     while (node) {
       arr.push(node.data);
       node = node.next;
@@ -79,8 +85,13 @@ export class LinkedList<T = any> {
     return arr;
   }
 
-  public find(data: Partial<T>): T | null {
-    let node = this.head;
+  public fromArray(arr: T[]): LinkedList<T> {
+    arr.forEach((value) => this.insert(value));
+    return this;
+  }
+
+  public find(data: T | Partial<T>): T | null {
+    let node = this._head;
 
     while (node) {
       if (partialDeepEqual(data, node.data)) {
@@ -93,16 +104,16 @@ export class LinkedList<T = any> {
     return null;
   }
 
-  public delete(data: Partial<T>): T | null {
-    if (!this.head) {
+  public delete(data: T | Partial<T>): T | null {
+    if (!this._head) {
       return null;
     }
 
-    if (partialDeepEqual(data, this.head.data)) {
+    if (partialDeepEqual(data, this._head.data)) {
       return this.deleteHead();
     }
 
-    let node = this.head;
+    let node = this._head;
     let previousNode = null;
 
     while (node) {
@@ -120,18 +131,18 @@ export class LinkedList<T = any> {
   }
 
   public deleteHead(): T | null {
-    if (!this.head) {
+    if (!this._head) {
       return null;
     }
 
     this.decrementSize();
-    const data = this.head.data;
-    this.head = this.head.next;
+    const data = this._head.data;
+    this._head = this._head.next;
     return data;
   }
 
   public deleteTail(): T | null {
-    if (!this.head) {
+    if (!this._head) {
       return null;
     }
 
@@ -139,7 +150,7 @@ export class LinkedList<T = any> {
       return this.deleteHead();
     }
 
-    let node = this.head;
+    let node = this._head;
     let previousNode = node;
     while (node.next) {
       previousNode = node;
@@ -152,7 +163,7 @@ export class LinkedList<T = any> {
   }
 
   public deleteAt(position: number): T | null {
-    if (!this.head) {
+    if (!this._head) {
       return null;
     }
 
@@ -168,7 +179,7 @@ export class LinkedList<T = any> {
       return null;
     }
 
-    let node = this.head;
+    let node = this._head;
     let previousNode = node;
     for (let i = 1; i < position; i++) {
       previousNode = node;
@@ -181,13 +192,13 @@ export class LinkedList<T = any> {
   }
 
   public reverse() {
-    if (!this.head) {
+    if (!this._head) {
       return;
     }
 
     let previousNode = null;
     let currentNode = null;
-    let nextNode = this.head;
+    let nextNode = this._head;
 
     while (nextNode) {
       previousNode = currentNode;
@@ -197,11 +208,11 @@ export class LinkedList<T = any> {
     }
 
     previousNode = currentNode;
-    this.head = previousNode;
+    this._head = previousNode;
   }
 
   protected [Symbol.iterator]() {
-    let node = this.head;
+    let node = this._head;
 
     return {
       next: () => {

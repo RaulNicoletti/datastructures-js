@@ -1,5 +1,4 @@
 import { LinkedList } from './linked-list';
-import { LinkedListNode } from './linked-list-node';
 
 class Person {
   name: string;
@@ -28,19 +27,16 @@ describe('linkedList size', () => {
 
   it('should size be one', () => {
     const linkedList = new LinkedList();
-    const node = new LinkedListNode(1);
 
-    linkedList.insert(node);
+    linkedList.insert(1);
 
     expect(linkedList.size).toBe(1);
   });
 
   it('should size be two', () => {
     const linkedList = new LinkedList();
-    const node1 = new LinkedListNode(1);
-    const node2 = new LinkedListNode(2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(1).insert(2);
 
     expect(linkedList.size).toBe(2);
   });
@@ -49,46 +45,58 @@ describe('linkedList size', () => {
 describe('linkedList insert', () => {
   it('should insert a new node in an empty linked list', () => {
     const linkedList = new LinkedList();
-    const node = new LinkedListNode(1);
 
-    linkedList.insert(node);
+    linkedList.insert(1);
 
-    expect(linkedList.head).toStrictEqual(node);
+    expect(linkedList.head.data).toStrictEqual(1);
   });
 
   it('should insert a new node', () => {
     const linkedList = new LinkedList();
-    const node1 = new LinkedListNode(1);
-    const node2 = new LinkedListNode(2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(1).insert(2);
 
-    expect(linkedList.head).toStrictEqual(node1);
+    expect(linkedList.head.data).toStrictEqual(1);
 
     const nextNode = linkedList.head.next;
-    expect(nextNode).toStrictEqual(node2);
+    expect(nextNode.data).toStrictEqual(2);
   });
 });
 
 describe('linkedList toArray', () => {
   it('should return the linked list in an array format', () => {
     const linkedList = new LinkedList();
-    const node1 = new LinkedListNode(1);
-    const node2 = new LinkedListNode(2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(1).insert(2);
 
     const arr = linkedList.toArray();
     expect(arr).toStrictEqual([1, 2]);
   });
 });
 
+describe('linkedList fromArray', () => {
+  it('should return the linked list in an array format', () => {
+    const linkedList = new LinkedList();
+
+    const arr = [1, 2, 3];
+    linkedList.fromArray(arr);
+
+    expect(linkedList.size).toBe(3);
+
+    let str = '';
+    for (const value of linkedList) {
+      str += value.toString();
+    }
+
+    expect(str).toStrictEqual('123');
+  });
+});
+
 describe('linkedList find', () => {
   it('should find an element', () => {
     const linkedList = new LinkedList();
-    const node = new LinkedListNode(1);
 
-    linkedList.insert(node);
+    linkedList.insert(1);
 
     const element = linkedList.find(1);
 
@@ -105,10 +113,8 @@ describe('linkedList find', () => {
 
   it('should not find an element - 2', () => {
     const linkedList = new LinkedList();
-    const node1 = new LinkedListNode(1);
-    const node2 = new LinkedListNode(2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(1).insert(2);
 
     const element = linkedList.find(3);
 
@@ -119,24 +125,20 @@ describe('linkedList find', () => {
     const p1 = new Person('raul', 32);
     const p2 = new Person('pedro', 52);
     const linkedList = new LinkedList<Person>();
-    const node1 = new LinkedListNode(p1);
-    const node2 = new LinkedListNode(p2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(p1).insert(p2);
 
     const element = linkedList.find({ name: 'raul', age: 32 });
 
-    expect(element).toStrictEqual(node1.data);
+    expect(element).toStrictEqual(p1);
   });
 
   it('should not find an object element', () => {
     const p1 = new Person('raul', 32);
     const p2 = new Person('pedro', 52);
     const linkedList = new LinkedList<Person>();
-    const node1 = new LinkedListNode(p1);
-    const node2 = new LinkedListNode(p2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(p1).insert(p2);
 
     const element = linkedList.find({ name: 'not found', age: 32 });
 
@@ -159,9 +161,7 @@ describe('linked List delete', () => {
 
   it('should not delete a node when not found and return null', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    linkedList.insert(firstNode).insert(secondNode);
+    linkedList.insert(1).insert(2);
 
     expect(linkedList.size).toBe(2);
 
@@ -173,8 +173,7 @@ describe('linked List delete', () => {
 
   it('should delete a node, which is the head, and return it', () => {
     const linkedList = new LinkedList();
-    const node = new LinkedListNode(1);
-    linkedList.insert(node);
+    linkedList.insert(1);
 
     expect(linkedList.size).toBe(1);
 
@@ -182,67 +181,59 @@ describe('linked List delete', () => {
 
     expect(linkedList.size).toBe(0);
     expect(linkedList.head).toBeNull();
-    expect(data).toStrictEqual(node.data);
+    expect(data).toStrictEqual(1);
   });
 
   it('should delete the head node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    linkedList.insert(firstNode).insert(secondNode);
+    linkedList.insert(1).insert(2);
 
     expect(linkedList.size).toBe(2);
 
     const data = linkedList.delete(1);
 
     expect(linkedList.size).toBe(1);
-    expect(linkedList.head).toStrictEqual(secondNode);
-    expect(data).toStrictEqual(firstNode.data);
+    expect(linkedList.head.data).toStrictEqual(2);
+    expect(data).toStrictEqual(1);
   });
 
   it('should delete the node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    linkedList.insert(firstNode).insert(secondNode);
+    linkedList.insert(1).insert(2);
 
     expect(linkedList.size).toBe(2);
 
     const data = linkedList.delete(2);
 
     expect(linkedList.size).toBe(1);
-    expect(linkedList.head).toStrictEqual(firstNode);
-    expect(data).toStrictEqual(secondNode.data);
+    expect(linkedList.head.data).toStrictEqual(1);
+    expect(data).toStrictEqual(2);
   });
 
   it('should delete the node - object argument', () => {
     const p1 = new Person('raul', 32);
     const p2 = new Person('pedro', 52);
     const linkedList = new LinkedList<Person>();
-    const node1 = new LinkedListNode(p1);
-    const node2 = new LinkedListNode(p2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(p1).insert(p2);
 
     const element = linkedList.delete({ name: 'raul', age: 32 });
 
-    expect(element).toStrictEqual(node1.data);
-    expect(linkedList.head).toStrictEqual(node2);
+    expect(element).toStrictEqual(p1);
+    expect(linkedList.head.data).toStrictEqual(p2);
   });
 
   it('should not delete the node - object argument', () => {
     const p1 = new Person('raul', 32);
     const p2 = new Person('pedro', 52);
     const linkedList = new LinkedList<Person>();
-    const node1 = new LinkedListNode(p1);
-    const node2 = new LinkedListNode(p2);
 
-    linkedList.insert(node1).insert(node2);
+    linkedList.insert(p1).insert(p2);
 
     const element = linkedList.delete({ name: 'not found', age: 32 });
 
     expect(element).toBeNull();
-    expect(linkedList.head).toStrictEqual(node1);
+    expect(linkedList.head.data).toStrictEqual(p1);
   });
 });
 
@@ -261,8 +252,7 @@ describe('linkedList deleteHead', () => {
 
   it('should delete the head node when there is only the head node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    linkedList.insert(firstNode);
+    linkedList.insert(1);
 
     expect(linkedList.size).toBe(1);
 
@@ -270,22 +260,20 @@ describe('linkedList deleteHead', () => {
 
     expect(linkedList.size).toBe(0);
     expect(linkedList.head).toBeNull();
-    expect(data).toStrictEqual(firstNode.data);
+    expect(data).toStrictEqual(1);
   });
 
   it('should delete the head node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    linkedList.insert(firstNode).insert(secondNode);
+    linkedList.insert(1).insert(2);
 
     expect(linkedList.size).toBe(2);
 
     const data = linkedList.deleteHead();
 
     expect(linkedList.size).toBe(1);
-    expect(linkedList.head).toStrictEqual(secondNode);
-    expect(data).toStrictEqual(firstNode.data);
+    expect(linkedList.head.data).toStrictEqual(2);
+    expect(data).toStrictEqual(1);
   });
 });
 
@@ -304,8 +292,7 @@ describe('linkedList deleteTail', () => {
 
   it('should delete the tail node when there is only the head', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    linkedList.insert(firstNode);
+    linkedList.insert(1);
 
     expect(linkedList.size).toBe(1);
 
@@ -313,32 +300,26 @@ describe('linkedList deleteTail', () => {
 
     expect(linkedList.size).toBe(0);
     expect(linkedList.head).toBeNull();
-    expect(data).toStrictEqual(firstNode.data);
+    expect(data).toStrictEqual(1);
   });
 
   it('should delete the tail node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    linkedList.insert(firstNode).insert(secondNode).insert(thirdNode);
+    linkedList.insert(1).insert(2).insert(3);
 
     expect(linkedList.size).toBe(3);
 
     const data = linkedList.deleteTail();
 
     expect(linkedList.size).toBe(2);
-    expect(data).toStrictEqual(thirdNode.data);
+    expect(data).toStrictEqual(3);
   });
 });
 
 describe('linkedList deleteAt', () => {
   it('should delete a node at specified position', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    linkedList.insert(firstNode).insert(secondNode).insert(thirdNode);
+    linkedList.insert(1).insert(2).insert(3);
 
     expect(linkedList.size).toBe(3);
 
@@ -346,16 +327,13 @@ describe('linkedList deleteAt', () => {
     const arr = linkedList.toArray();
 
     expect(linkedList.size).toBe(2);
-    expect(data).toStrictEqual(secondNode.data);
-    expect(arr).toStrictEqual([firstNode.data, thirdNode.data]);
+    expect(data).toStrictEqual(2);
+    expect(arr).toStrictEqual([1, 3]);
   });
 
   it('should delete the first node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    linkedList.insert(firstNode).insert(secondNode).insert(thirdNode);
+    linkedList.insert(1).insert(2).insert(3);
 
     expect(linkedList.size).toBe(3);
 
@@ -363,16 +341,13 @@ describe('linkedList deleteAt', () => {
     const arr = linkedList.toArray();
 
     expect(linkedList.size).toBe(2);
-    expect(data).toStrictEqual(firstNode.data);
-    expect(arr).toStrictEqual([secondNode.data, thirdNode.data]);
+    expect(data).toStrictEqual(1);
+    expect(arr).toStrictEqual([2, 3]);
   });
 
   it('should delete the last node', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    linkedList.insert(firstNode).insert(secondNode).insert(thirdNode);
+    linkedList.insert(1).insert(2).insert(3);
 
     expect(linkedList.size).toBe(3);
 
@@ -380,16 +355,13 @@ describe('linkedList deleteAt', () => {
     const arr = linkedList.toArray();
 
     expect(linkedList.size).toBe(2);
-    expect(data).toStrictEqual(thirdNode.data);
-    expect(arr).toStrictEqual([firstNode.data, secondNode.data]);
+    expect(data).toStrictEqual(3);
+    expect(arr).toStrictEqual([1, 2]);
   });
 
   it('should not delete when the position is greater than size', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    linkedList.insert(firstNode).insert(secondNode).insert(thirdNode);
+    linkedList.insert(1).insert(2).insert(3);
 
     expect(linkedList.size).toBe(3);
 
@@ -398,11 +370,7 @@ describe('linkedList deleteAt', () => {
 
     expect(linkedList.size).toBe(3);
     expect(data).toBeNull();
-    expect(arr).toStrictEqual([
-      firstNode.data,
-      secondNode.data,
-      thirdNode.data,
-    ]);
+    expect(arr).toStrictEqual([1, 2, 3]);
   });
 
   it('should return null when the size is zero', () => {
@@ -422,11 +390,10 @@ describe('linkedList deleteAt', () => {
 describe('linkedList insertAt', () => {
   it('should not insert a node when the position is greater than the size and greater than one', () => {
     const linkedList = new LinkedList();
-    const node = new LinkedListNode(1);
 
     expect(linkedList.size).toBe(0);
 
-    linkedList.insertAt(2, node);
+    linkedList.insertAt(2, 1);
     const arr = linkedList.toArray();
 
     expect(linkedList.size).toBe(0);
@@ -435,42 +402,32 @@ describe('linkedList insertAt', () => {
 
   it('should insert a node when the position is one and the list is empty', () => {
     const linkedList = new LinkedList();
-    const node = new LinkedListNode(1);
 
     expect(linkedList.size).toBe(0);
 
-    const element = linkedList.insertAt(1, node);
+    const element = linkedList.insertAt(1, 1);
     const arr = linkedList.toArray();
 
     expect(linkedList.size).toBe(1);
-    expect(element.head).toStrictEqual(node);
-    expect(arr).toStrictEqual([node.data]);
+    expect(element.head.data).toStrictEqual(1);
+    expect(arr).toStrictEqual([1]);
   });
 
   it('should insert a node at given position', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    const fourthNode = new LinkedListNode(4);
 
     expect(linkedList.size).toBe(0);
 
-    linkedList.insert(firstNode);
-    linkedList.insert(secondNode);
-    linkedList.insertAt(2, thirdNode);
-    linkedList.insertAt(1, fourthNode);
+    linkedList.insert(1);
+    linkedList.insert(2);
+    linkedList.insertAt(2, 3);
+    linkedList.insertAt(1, 4);
 
     expect(linkedList.size).toBe(4);
 
     const arr = linkedList.toArray();
 
-    expect(arr).toStrictEqual([
-      fourthNode.data,
-      firstNode.data,
-      thirdNode.data,
-      secondNode.data,
-    ]);
+    expect(arr).toStrictEqual([4, 1, 3, 2]);
   });
 });
 
@@ -486,9 +443,8 @@ describe('linkedList reverse', () => {
 
   it('should revert a linked list - 1 element', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
 
-    linkedList.insert(firstNode);
+    linkedList.insert(1);
 
     linkedList.reverse();
 
@@ -498,10 +454,8 @@ describe('linkedList reverse', () => {
 
   it('should revert a linked list - 2 elements', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
 
-    linkedList.insert(firstNode).insert(secondNode);
+    linkedList.insert(1).insert(2);
 
     linkedList.reverse();
 
@@ -511,16 +465,8 @@ describe('linkedList reverse', () => {
 
   it('should revert a linked list - 4 elements', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode(1);
-    const secondNode = new LinkedListNode(2);
-    const thirdNode = new LinkedListNode(3);
-    const fourthNode = new LinkedListNode(4);
 
-    linkedList
-      .insert(firstNode)
-      .insert(secondNode)
-      .insert(thirdNode)
-      .insert(fourthNode);
+    linkedList.insert(1).insert(2).insert(3).insert(4);
 
     linkedList.reverse();
 
@@ -532,16 +478,8 @@ describe('linkedList reverse', () => {
 describe('linkedList [Symbol.iterator]', () => {
   it('should iterate through the linked list using for of', () => {
     const linkedList = new LinkedList();
-    const firstNode = new LinkedListNode('1');
-    const secondNode = new LinkedListNode('2');
-    const thirdNode = new LinkedListNode('3');
-    const fourthNode = new LinkedListNode('4');
 
-    linkedList
-      .insert(firstNode)
-      .insert(secondNode)
-      .insert(thirdNode)
-      .insert(fourthNode);
+    linkedList.insert('1').insert('2').insert('3').insert('4');
 
     let str = '';
     for (const value of linkedList) {

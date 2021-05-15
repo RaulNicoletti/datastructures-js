@@ -94,4 +94,58 @@ describe('comparator compare', () => {
 
     expect(res).toBe(0);
   });
+
+  it('should return -1 when A is lesser than B - customized compare function 2', () => {
+    const p1 = new Person(1, 'aline');
+    const p2 = new Person(2, 'bia');
+
+    const compareFn: CompareFn<Person> = (a, b) => {
+      if (a.name === b.name) {
+        return 0;
+      }
+
+      return a.name < b.name ? -1 : 1;
+    };
+
+    const comparator = new Comparator(compareFn);
+    const res = comparator.compare(p1, p2);
+
+    expect(res).toBe(-1);
+  });
+
+  it('should return -1 when A is greater than B - customized compare function 2', () => {
+    const p1 = new Person(1, 'bia');
+    const p2 = new Person(2, 'aline');
+
+    const compareFn: CompareFn<Person> = (a, b) => {
+      if (a.name === b.name) {
+        return 0;
+      }
+
+      return a.name < b.name ? -1 : 1;
+    };
+
+    const comparator = new Comparator(compareFn);
+    const res = comparator.compare(p1, p2);
+
+    expect(res).toBe(1);
+  });
+
+  it('should return 0 when A is equal to B - customized compare function 2', () => {
+    const p1 = new Person(1, 'aline');
+    const p2 = new Person(1, 'aline');
+
+    const compareFn: CompareFn<Person> = (a, b) => {
+      if (a.name === b.name) {
+        return 0;
+      }
+
+      return a.name < b.name ? -1 : 1;
+    };
+
+    const comparator = new Comparator(compareFn);
+    const res = comparator.compare(p1, p2);
+
+    expect(res).toBe(0);
+  });
 });

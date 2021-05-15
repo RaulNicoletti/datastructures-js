@@ -80,4 +80,12 @@ export class BinarySearchTree<T> {
       this.inOrderTraversal(node.right);
     }
   }
+
+  public preOrderTraversal(node: BinarySearchTreeNode<T> | null): void {
+    if (node) {
+      console.log(node.data);
+      this.preOrderTraversal(node.left);
+      this.preOrderTraversal(node.right);
+    }
+  }
 }

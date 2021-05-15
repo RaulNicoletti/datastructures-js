@@ -175,7 +175,7 @@ describe('binarySearchTree find', () => {
 });
 
 describe('binarySearchTree inOrderTraversal', () => {
-  it('should perform Inorder traversal and return the values', () => {
+  it('should perform Inorder traversal', () => {
     const tree = new BinarySearchTree<number>();
 
     const arr: number[] = [];
@@ -185,5 +185,19 @@ describe('binarySearchTree inOrderTraversal', () => {
     tree.inOrderTraversal(tree.root);
 
     expect(arr).toStrictEqual([5, 8, 10, 20, 30]);
+  });
+});
+
+describe('binarySearchTree preOrderTraversal', () => {
+  it('should perform Preorder traversal', () => {
+    const tree = new BinarySearchTree<number>();
+
+    const arr: number[] = [];
+    jest.spyOn(console, 'log').mockImplementation((msg) => arr.push(msg));
+
+    tree.insert(10).insert(5).insert(20).insert(8).insert(30);
+    tree.preOrderTraversal(tree.root);
+
+    expect(arr).toStrictEqual([10, 5, 8, 20, 30]);
   });
 });

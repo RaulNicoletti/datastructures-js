@@ -72,4 +72,12 @@ export class BinarySearchTree<T> {
 
     return null;
   }
+
+  public inOrderTraversal(node: BinarySearchTreeNode<T> | null): void {
+    if (node) {
+      this.inOrderTraversal(node.left);
+      console.log(node.data);
+      this.inOrderTraversal(node.right);
+    }
+  }
 }

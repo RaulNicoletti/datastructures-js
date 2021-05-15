@@ -173,3 +173,17 @@ describe('binarySearchTree find', () => {
     expect(res).toBeNull();
   });
 });
+
+describe('binarySearchTree inOrderTraversal', () => {
+  it('should perform Inorder traversal and return the values', () => {
+    const tree = new BinarySearchTree<number>();
+
+    const arr: number[] = [];
+    jest.spyOn(console, 'log').mockImplementation((msg) => arr.push(msg));
+
+    tree.insert(10).insert(5).insert(20).insert(8).insert(30);
+    tree.inOrderTraversal(tree.root);
+
+    expect(arr).toStrictEqual([5, 8, 10, 20, 30]);
+  });
+});
